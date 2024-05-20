@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>replit</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+    integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+    }
+
+    .card {
+      margin-top: 100px;
+      padding: 10px 10px 10px 10px;
+    }
+
+    .card-input {
+      margin-top: 20px;
+    }
+
+    .inputcurr {
+      padding: 6px 6px 6px 6px;
+      text-align: center;
+      border-radius: 20px;
+      border: 2px solid darkgrey;
+    }
+
+    .notered {
+      color: red;
+    }
+
+    .button {
+      display: flex;
+      justify-content: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card" style="width: 18rem;">
+    <div class="card-body text-center">
+      <h5 class="card-title head"> EXCHANGE <i class="fa-solid fa-arrow-right-arrow-left"></i> RATE </h5>
+      <p class="card-input"><input type="text" class="inputcurr" id="ecurr" value="USD" placeholder="Enter country code" </input></p>
+      <p class="line"><span class="notered">Note :- </span> Country Code Capital. </p>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item" id="inrcurr">INR : </li>
+      <li class="list-group-item" id="usdcurr">USD : </li>
+      <li class="list-group-item" id="rubcurr">RUB : </li>
+    </ul>
+    <div class="card-body button">
+      <button class="btn btn-dark" id="btnid">GET EXCHANGE RATE</button>
+    </div>
+  </div>
+  <script>
+    var rest_api = "https://restcountries.com/v3.1/all";
+
+    var curr_api = "https://v6.exchangerate-api.com/v6/56a42cc2e30536e86d20a985/latest/"
+
+    var inrcurr = document.getElementById('inrcurr')
+
+    var usdcurr = document.getElementById('usdcurr')
+
+    var rubcurr = document.getElementById('rubcurr')
+
+    var btn = document.getElementById('btnid');
+    btn.addEventListener('click', foo)
+
+    async function foo() {
+      var input = document.getElementById('ecurr').value;
+      if (input === "") {
+        inrcurr.innerHTML = `INR : Please Enter Country Code.`
+        usdcurr.innerHTML = `USD : Please Enter Country Code.`
+        rubcurr.innerHTML = `RUB : Please Enter Country Code.`
+        confirm("Please Enter the Country code.")
+      }
+      try {
+        let res_data = await fetch(rest_api);
+        let res_data1 = await res_data.json();
+
+        let curr_data = await fetch(`${curr_api}/${input}`);
+        let curr_data1 = await curr_data.json();
+
+        inrcurr.innerHTML = `INR : ${curr_data1.conversion_rates.INR}`
+        usdcurr.innerHTML = `USD : ${curr_data1.conversion_rates.USD}`
+        rubcurr.innerHTML = `RUB : ${curr_data1.conversion_rates.RUB}`
+
+      } catch (error) {
+        console.log("Some Error Show or Input Empty")
+      }
+    }
+    foo()
+
+
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
